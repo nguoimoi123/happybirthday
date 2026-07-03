@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="app" id="app">
+    <img class="room-bg" src="./assets/memory-room.png" alt="">
+    <div class="veil"></div>
+    <div class="hearts" aria-hidden="true"></div>
+
+    <nav class="steps" aria-label="Story progress">
+      <span class="active"></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </nav>
+
+    <section class="scene active time-gate-scene" data-scene="0">
+      <div class="copy center time-gate-card">
+        <p class="eyebrow" id="gateEyebrow"></p>
+        <h1 id="gateTitle"></h1>
+        <p class="lead" id="gateLead"></p>
+        <div class="time-grid" aria-label="Countdown to birthday unlock">
+          <div class="time-box">
+            <strong id="gateDays">00</strong>
+            <span id="gateDaysLabel"></span>
+          </div>
+          <div class="time-box">
+            <strong id="gateHours">00</strong>
+            <span id="gateHoursLabel"></span>
+          </div>
+          <div class="time-box">
+            <strong id="gateMinutes">00</strong>
+            <span id="gateMinutesLabel"></span>
+          </div>
+          <div class="time-box">
+            <strong id="gateSeconds">00</strong>
+            <span id="gateSecondsLabel"></span>
+          </div>
+        </div>
+        <p class="gate-status" id="gateStatus"></p>
+        <button class="primary gate-open" id="gateOpen" type="button" hidden></button>
+        <button class="secondary gate-override-toggle" id="gateOverrideToggle" type="button"></button>
+        <div class="gate-override" id="gateOverride" hidden>
+          <div class="override-box">
+            <input id="gateOverrideInput" type="password" autocomplete="off" spellcheck="false">
+            <button id="gateOverrideSubmit" type="button"></button>
+          </div>
+          <p class="gate-override-hint" id="gateOverrideHint"></p>
+        </div>
+      </div>
+      <img class="character time-gate-gif" id="gateGif" src="./assets/party-cake.gif" alt="Peach Cat waiting for birthday time">
+    </section>
+
+    <section class="scene lock-scene" data-scene="1">
+      <div class="copy">
+        <p class="eyebrow" id="lockEyebrow"></p>
+        <h1 id="lockTitle"></h1>
+        <p class="lead" id="lockLead"></p>
+        <div class="unlock-box">
+          <input id="passwordInput" type="text" autocomplete="off" spellcheck="false">
+          <button id="unlockBtn" type="button"></button>
+        </div>
+        <p class="hint" id="passwordHint"></p>
+      </div>
+      <button class="gif-lock" id="holdGift" type="button" aria-label="Open with Peach Cat">
+        <span class="gif-orbit" aria-hidden="true"></span>
+        <img id="lockGif" src="./assets/start.gif" alt="Peach Cat waiting at the secret room">
+        <span class="tap-label" id="tapLabel"></span>
+      </button>
+    </section>
+
+    <section class="scene suspense-scene" data-scene="2">
+      <div class="copy narrow">
+        <p class="eyebrow" id="suspenseEyebrow"></p>
+        <h2 id="suspenseTitle"></h2>
+        <p class="lead type-target" id="suspenseText"></p>
+        <button class="primary next" id="suspenseNext" type="button"></button>
+      </div>
+      <img class="character peek" id="suspenseGif" src="./assets/please.gif" alt="Peach Cat quietly waiting">
+    </section>
+
+    <section class="scene memory-scene" data-scene="3">
+      <div class="copy">
+        <p class="eyebrow" id="memoryEyebrow"></p>
+        <h2 id="memoryTitle"></h2>
+        <p class="lead" id="memoryLead"></p>
+      </div>
+      <div class="memory-board">
+        <button class="memory-card" data-memory="0" type="button">
+          <span></span>
+          <strong></strong>
+        </button>
+        <button class="memory-card" data-memory="1" type="button">
+          <span></span>
+          <strong></strong>
+        </button>
+        <button class="memory-card" data-memory="2" type="button">
+          <span></span>
+          <strong></strong>
+        </button>
+      </div>
+      <aside class="memory-note" id="memoryNote">
+        <img id="memoryGif" src="./assets/start.gif" alt="">
+        <p></p>
+      </aside>
+      <button class="primary next memory-next" id="memoryNext" type="button" disabled></button>
+    </section>
+
+    <section class="scene countdown-scene" data-scene="4">
+      <div class="count-wrap">
+        <p class="eyebrow" id="countdownEyebrow"></p>
+        <div class="count" id="countNumber">5</div>
+        <p id="countCaption"></p>
+      </div>
+      <img class="character countdown-gif" id="countGif" src="./assets/start.gif" alt="Peach Cat waiting for the countdown">
+    </section>
+
+    <section class="scene birthday-scene" data-scene="5">
+      <div class="birthday-light"></div>
+      <div class="copy center">
+        <p class="eyebrow" id="birthdayEyebrow"></p>
+        <h2 id="birthdayTitle"></h2>
+        <p class="lead" id="birthdayLead"></p>
+        <button class="primary next" id="birthdayNext" type="button"></button>
+      </div>
+      <img class="birthday-gif" id="birthdayGif" src="./assets/birthday.gif" alt="Birthday Peach Cat">
+    </section>
+
+    <section class="scene cake-scene" data-scene="6">
+      <div class="copy center cake-copy">
+        <p class="eyebrow" id="cakeEyebrow"></p>
+        <h2 id="cakeTitle"></h2>
+        <p class="lead" id="cakeLead"></p>
+        <button class="primary mic-start" id="micStart" type="button"></button>
+        <div class="blow-meter" aria-hidden="true">
+          <span id="blowLevel"></span>
+        </div>
+        <p class="cake-status" id="cakeStatus"></p>
+      </div>
+
+      <button class="cake-stage" id="cakeStage" type="button" aria-label="Thổi nến sinh nhật">
+        <span class="wish-sparkles" aria-hidden="true"></span>
+        <span class="cake-plate" aria-hidden="true"></span>
+        <span class="birthday-cake" aria-hidden="true">
+          <span class="candles">
+            <span class="candle candle-one">
+              <span class="flame"></span>
+              <span class="smoke"></span>
+            </span>
+            <span class="candle candle-two">
+              <span class="flame"></span>
+              <span class="smoke"></span>
+            </span>
+            <span class="candle candle-three">
+              <span class="flame"></span>
+              <span class="smoke"></span>
+            </span>
+          </span>
+          <span class="cake-top"></span>
+          <span class="cake-body"></span>
+          <span class="cake-base"></span>
+        </span>
+      </button>
+    </section>
+
+    <section class="scene letter-scene" data-scene="7">
+      <article class="letter">
+        <p class="eyebrow" id="letterEyebrow"></p>
+        <h2 id="letterTitle"></h2>
+        <p id="letterText"></p>
+        <button class="primary next" id="letterNext" type="button"></button>
+      </article>
+      <img class="character letter-gif" id="letterGif" src="./assets/love-clean.gif" alt="Love Peach Cat">
+    </section>
+
+    <section class="scene final-scene" data-scene="8">
+      <div class="copy center final-card">
+        <p class="eyebrow" id="finalEyebrow"></p>
+        <h2 id="finalTitle"></h2>
+        <div class="choice-row">
+          <button class="primary" id="yesBtn" type="button"></button>
+          <button class="secondary" id="shyBtn" type="button"></button>
+        </div>
+        <p class="final-message" id="finalMessage"></p>
+        <div class="revisit-panel" id="revisitPanel" hidden>
+          <p class="revisit-title" id="revisitTitle"></p>
+          <div class="revisit-grid" id="revisitGrid"></div>
+        </div>
+      </div>
+      <img class="final-gif" id="finalGif" src="./assets/hug.gif" alt="Hug Peach Cat">
+    </section>
+  </main>
+
+  <button class="sound-toggle" id="soundToggle" type="button" aria-label="Toggle music"></button>
+  <div class="youtube-holder" id="youtubeHolder" aria-hidden="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+  <script src="./env.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
