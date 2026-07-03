@@ -4,6 +4,7 @@ const app = document.querySelector("#app");
 const scenes = [...document.querySelectorAll(".scene")];
 const stepDots = [...document.querySelectorAll(".steps span")];
 const nextButtons = [...document.querySelectorAll(".next")];
+const reviewReturnButtons = [...document.querySelectorAll(".review-return")];
 const gateDays = document.querySelector("#gateDays");
 const gateHours = document.querySelector("#gateHours");
 const gateMinutes = document.querySelector("#gateMinutes");
@@ -71,6 +72,7 @@ let micStarting = false;
 let youtubeFrame;
 let youtubePlaying = true;
 let resumeMusicAfterCake = false;
+let isReviewingScene = false;
 const openedMemories = new Set();
 
 const memories = [
@@ -184,13 +186,16 @@ function applyContent() {
   yesBtn.textContent = env.final.yes;
   shyBtn.textContent = env.final.shy;
   revisitTitle.textContent = env.final.revisitTitle;
+  reviewReturnButtons.forEach((button) => {
+    button.textContent = env.final.revisitBack;
+  });
   revisitGrid.innerHTML = "";
   env.final.revisit.forEach((item) => {
     const button = document.createElement("button");
     button.className = "revisit-btn";
     button.type = "button";
     button.textContent = item.label;
-    button.addEventListener("click", () => goToScene(item.scene));
+    button.addEventListener("click", () => goToScene(item.scene, { review: true }));
     revisitGrid.append(button);
   });
   soundToggle.textContent = env.common.soundLabel;
@@ -200,11 +205,17 @@ function normalize(value) {
   return value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-function goToScene(index) {
+function goToScene(index, options = {}) {
   const previousScene = currentScene;
+  isReviewingScene = Boolean(options.review);
   currentScene = index;
   scenes.forEach((scene, sceneIndex) => {
     scene.classList.toggle("active", sceneIndex === index);
+    scene.classList.toggle("reviewing", isReviewingScene && sceneIndex === index);
+  });
+  reviewReturnButtons.forEach((button) => {
+    const scene = button.closest(".scene");
+    button.hidden = !(isReviewingScene && Number(scene?.dataset.scene) === index);
   });
   stepDots.forEach((dot, dotIndex) => {
     dot.classList.toggle("active", dotIndex === index);
@@ -751,7 +762,14 @@ passwordInput.addEventListener("keydown", (event) => {
 });
 
 nextButtons.forEach((button) => {
-  button.addEventListener("click", () => goToScene(Math.min(currentScene + 1, scenes.length - 1)));
+  button.addEventListener("click", () => {
+    if (button.closest(".scene")?.classList.contains("reviewing")) return;
+    goToScene(Math.min(currentScene + 1, scenes.length - 1));
+  });
+});
+
+reviewReturnButtons.forEach((button) => {
+  button.addEventListener("click", () => goToScene(8));
 });
 
 micStart.addEventListener("click", () => {
