@@ -1,7 +1,5 @@
 {
   "buildCommand": "echo 'Static site - no build needed'",
-  "outputDirectory": ".",
-  "env": {
-    "VITE_API_URL": "@vite_api_url"
-  }
+  "outputDirectory": "."
 }
+
