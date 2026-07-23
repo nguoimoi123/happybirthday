@@ -53,6 +53,7 @@ const soundToggle = document.querySelector("#soundToggle");
 const youtubeHolder = document.querySelector("#youtubeHolder");
 
 const secret = env.password;
+const storyProgressKey = `birthday-mini-story:progress:${env.timeGate.target}`;
 let currentScene = 0;
 let typingTimer;
 let timeGateTimer;
@@ -209,6 +210,9 @@ function goToScene(index, options = {}) {
   const previousScene = currentScene;
   isReviewingScene = Boolean(options.review);
   currentScene = index;
+  if (index === 8 && getStoryProgress() !== "revealed") {
+    saveStoryProgress("visited");
+  }
   scenes.forEach((scene, sceneIndex) => {
     scene.classList.toggle("active", sceneIndex === index);
     scene.classList.toggle("reviewing", isReviewingScene && sceneIndex === index);
@@ -297,21 +301,28 @@ function startTimeGate() {
 
 function updateTimeGate() {
   const target = new Date(env.timeGate.target).getTime();
-  const remaining = target - Date.now();
+  const closeAt = new Date(env.timeGate.closeAt).getTime();
+  const now = Date.now();
+  const remaining = target - now;
 
-  if (!Number.isFinite(target)) {
+  if (!Number.isFinite(target) || !Number.isFinite(closeAt) || closeAt <= target) {
+    setGateTimeToZero();
+    gateStatus.textContent = env.timeGate.closed;
+    return;
+  }
+
+  if (now >= target && now < closeAt) {
+    setGateTimeToZero();
     gateStatus.textContent = env.timeGate.ready;
     releaseTimeGate();
     return;
   }
 
-  if (remaining <= 0) {
-    gateDays.textContent = "00";
-    gateHours.textContent = "00";
-    gateMinutes.textContent = "00";
-    gateSeconds.textContent = "00";
-    gateStatus.textContent = env.timeGate.ready;
-    releaseTimeGate();
+  if (now >= closeAt) {
+    setGateTimeToZero();
+    gateStatus.textContent = env.timeGate.closed;
+    gateOpen.hidden = true;
+    gateOpen.disabled = true;
     return;
   }
 
@@ -326,6 +337,25 @@ function updateTimeGate() {
   gateMinutes.textContent = padTime(minutes);
   gateSeconds.textContent = padTime(displaySeconds);
   gateStatus.textContent = env.timeGate.status;
+}
+
+function isTimeGateOpen() {
+  const target = new Date(env.timeGate.target).getTime();
+  const closeAt = new Date(env.timeGate.closeAt).getTime();
+  const now = Date.now();
+
+  return Number.isFinite(target)
+    && Number.isFinite(closeAt)
+    && closeAt > target
+    && now >= target
+    && now < closeAt;
+}
+
+function setGateTimeToZero() {
+  gateDays.textContent = "00";
+  gateHours.textContent = "00";
+  gateMinutes.textContent = "00";
+  gateSeconds.textContent = "00";
 }
 
 function releaseTimeGate() {
@@ -625,6 +655,7 @@ function moveShyButton() {
 }
 
 function finalReveal() {
+  saveStoryProgress("revealed");
   finalCard.classList.add("revealed");
   choiceRow.classList.add("done");
   yesBtn.disabled = true;
@@ -637,6 +668,34 @@ function finalReveal() {
     revisitPanel.hidden = false;
   });
   bigBurst();
+}
+
+function restoreFinalReveal() {
+  finalCard.classList.add("revealed");
+  choiceRow.classList.add("done");
+  yesBtn.disabled = true;
+  shyBtn.disabled = true;
+  finalGif.classList.add("show");
+  finalGif.src = "./assets/hug.gif";
+  finalMessage.textContent = env.final.message;
+  revisitPanel.hidden = false;
+  startSceneGifLoop(8);
+}
+
+function getStoryProgress() {
+  try {
+    return localStorage.getItem(storyProgressKey);
+  } catch {
+    return null;
+  }
+}
+
+function saveStoryProgress(value) {
+  try {
+    localStorage.setItem(storyProgressKey, value);
+  } catch {
+    // The story still works if storage is unavailable.
+  }
 }
 
 function softBurst(count = 40) {
@@ -733,7 +792,7 @@ function postYoutubeCommand(func) {
 applyContent();
 
 gateOpen.addEventListener("click", () => {
-  if (Date.now() >= new Date(env.timeGate.target).getTime()) goToScene(1);
+  if (isTimeGateOpen()) goToScene(1);
 });
 
 gateOverrideToggle.addEventListener("click", () => {
@@ -803,5 +862,12 @@ shyBtn.addEventListener("click", (event) => {
 });
 soundToggle.addEventListener("click", toggleSound);
 
-goToScene(0);
+const savedStoryProgress = getStoryProgress();
+if (isTimeGateOpen() && savedStoryProgress) {
+  goToScene(8);
+  if (savedStoryProgress === "revealed") restoreFinalReveal();
+  startHearts();
+} else {
+  goToScene(0);
+}
 startDefaultMusic();

@@ -14,11 +14,13 @@ window.BIRTHDAY_ENV = {
 
   timeGate: {
     target: "2026-07-30T00:00:00+07:00",
+    closeAt: "2026-07-31T00:00:00+07:00",
     eyebrow: "countdown to 30/7",
     title: "Chưa tới giờ mở quà đâu bé",
     lead: "Món quà này phải đợi đúng 0h00 ngày 30/7 mới được mở. Ngọc chịu khó chờ anh thêm xíu nha.",
     status: "Còn lại đến 0h00 ngày 30/7",
     ready: "Tới giờ rồi. Căn phòng bí mật đã mở cho Ngọc.",
+    closed: "Ngày sinh nhật đã qua. Căn phòng bí mật đã khóa lại rồi.",
     button: "Mở quà của Ngọc",
     overrideButton: "Em muốn mở ngay lập tức",
     overridePlaceholder: "nhập mật khẩu",
