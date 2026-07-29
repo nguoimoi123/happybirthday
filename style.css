@@ -1036,6 +1036,26 @@ input:focus {
   min-height: 0;
 }
 
+.gift-love-note {
+  max-width: 42ch;
+  margin: 16px auto 0;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 159, 189, .26);
+}
+
+.gift-love-note p {
+  margin: 0;
+  color: var(--soft);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.gift-love-note .gift-prompt {
+  margin-top: 10px;
+  color: var(--rose-deep);
+  font-weight: 800;
+}
+
 .revisit-panel {
   margin-top: 18px;
   animation: revisit-in .38s ease both;
@@ -1089,7 +1109,7 @@ input:focus {
   transition: opacity .45s ease, transform .45s ease;
 }
 
-.final-gift img {
+.final-gift > img {
   display: block;
   width: 100%;
   aspect-ratio: 4 / 5;
@@ -1105,6 +1125,23 @@ input:focus {
   font-weight: 800;
   line-height: 1.4;
   text-align: center;
+}
+
+.gift-peach-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.gift-peach-row img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 4px solid rgba(255, 238, 244, .9);
+  border-radius: 8px;
+  background: rgba(255, 242, 247, .82);
+  object-fit: contain;
 }
 
 .final-gift.show {
@@ -1430,8 +1467,31 @@ input:focus {
     font-size: 13px;
   }
 
+  .gift-peach-row {
+    gap: 5px;
+    margin-top: 7px;
+  }
+
+  .gift-peach-row img {
+    border-width: 3px;
+  }
+
+  .gift-love-note {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+
+  .gift-love-note p {
+    font-size: 14px;
+    line-height: 1.48;
+  }
+
   .time-gate-scene {
     gap: 10px;
+  }
+
+  .app.gift-revealed .final-scene {
+    justify-content: flex-start;
   }
 
   .time-gate-gif {
@@ -1559,7 +1619,8 @@ input:focus {
 
   .heart,
   .wish-sparkles,
-  .gif-orbit {
+  .gif-orbit,
+  .gift-peach-row {
     display: none;
   }
 }

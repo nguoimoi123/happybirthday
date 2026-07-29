@@ -45,12 +45,14 @@ const choiceRow = document.querySelector(".choice-row");
 const finalCard = document.querySelector(".final-card");
 const finalGift = document.querySelector("#finalGift");
 const finalMessage = document.querySelector("#finalMessage");
+const giftLoveNote = document.querySelector("#giftLoveNote");
 const revisitPanel = document.querySelector("#revisitPanel");
 const revisitTitle = document.querySelector("#revisitTitle");
 const revisitGrid = document.querySelector("#revisitGrid");
 const hearts = document.querySelector(".hearts");
 const soundToggle = document.querySelector("#soundToggle");
 const youtubeHolder = document.querySelector("#youtubeHolder");
+const birthdaySong = document.querySelector("#birthdaySong");
 
 const secret = env.password;
 const storyProgressKey = `birthday-mini-story:progress:${env.timeGate.target}`;
@@ -74,6 +76,9 @@ let micStarting = false;
 let youtubeFrame;
 let youtubePlaying = true;
 let resumeMusicAfterCake = false;
+let resumeMusicAfterBirthdaySong = false;
+let birthdaySongPlayed = false;
+let birthdaySongPlaying = false;
 let isReviewingScene = false;
 const openedMemories = new Set();
 
@@ -182,6 +187,8 @@ function applyContent() {
   setText("#finalEyebrow", env.final.eyebrow);
   setText("#finalTitle", env.final.title);
   setText("#giftCaption", env.final.giftCaption);
+  setText("#giftNote", env.final.giftNote);
+  setText("#giftPrompt", env.final.giftPrompt);
   yesBtn.textContent = env.final.yes;
   shyBtn.textContent = env.final.shy;
   revisitTitle.textContent = env.final.revisitTitle;
@@ -228,6 +235,7 @@ function goToScene(index, options = {}) {
   });
   app.classList.toggle("birthday-mode", index === 5 || index === 6);
   app.classList.toggle("final-mode", index === 8);
+  app.classList.toggle("gift-revealed", index === 8 && getStoryProgress() === "revealed");
 
   clearTimeout(typingTimer);
   clearTimeout(suspenseTimer);
@@ -240,7 +248,11 @@ function goToScene(index, options = {}) {
   }
   if (previousScene === 6 && index !== 6) {
     stopBlowDetector();
-    if (resumeMusicAfterCake) playMusic();
+    if (resumeMusicAfterCake && birthdaySongPlaying) {
+      resumeMusicAfterBirthdaySong = true;
+    } else if (resumeMusicAfterCake) {
+      playMusic();
+    }
     resumeMusicAfterCake = false;
   }
   if (index === 1) startLockGifLoop();
@@ -622,8 +634,31 @@ function blowOutCandles() {
   micStart.hidden = true;
   blowLevel.style.width = "100%";
   stopBlowDetector();
+  playBirthdaySongOnce();
   softBurst(62);
   setTimeout(() => goToScene(7), 1800);
+}
+
+function playBirthdaySongOnce() {
+  if (birthdaySongPlayed) return;
+  birthdaySongPlayed = true;
+  birthdaySongPlaying = true;
+  birthdaySong.loop = false;
+  birthdaySong.currentTime = 0;
+  cakeStatus.textContent = env.cake.songPlaying;
+
+  birthdaySong.play().catch(() => {
+    cakeStatus.textContent = env.cake.songError;
+    finishBirthdaySongPlayback();
+  });
+}
+
+function finishBirthdaySongPlayback() {
+  birthdaySongPlaying = false;
+  if (resumeMusicAfterBirthdaySong) {
+    resumeMusicAfterBirthdaySong = false;
+    playMusic();
+  }
 }
 
 function stopBlowDetector() {
@@ -666,6 +701,7 @@ function moveShyButton() {
 
 function finalReveal() {
   saveStoryProgress("revealed");
+  app.classList.add("gift-revealed");
   finalCard.classList.add("revealed");
   choiceRow.classList.add("done");
   yesBtn.disabled = true;
@@ -674,6 +710,7 @@ function finalReveal() {
   finalGift.hidden = false;
   finalGift.classList.add("show");
   typeText(finalMessage, env.final.message, 24, () => {
+    giftLoveNote.hidden = false;
     revisitPanel.hidden = false;
   });
   bigBurst();
@@ -684,6 +721,7 @@ function restoreFinalReveal() {
   choiceRow.classList.add("done");
   yesBtn.disabled = true;
   shyBtn.disabled = true;
+  giftLoveNote.hidden = false;
   finalGift.hidden = false;
   finalGift.classList.add("show");
   finalMessage.textContent = env.final.message;
@@ -870,6 +908,10 @@ shyBtn.addEventListener("click", (event) => {
   moveShyButton();
 });
 soundToggle.addEventListener("click", toggleSound);
+birthdaySong.addEventListener("ended", () => {
+  finishBirthdaySongPlayback();
+});
+birthdaySong.addEventListener("error", finishBirthdaySongPlayback);
 
 const savedStoryProgress = getStoryProgress();
 if (isTimeGateOpen() && savedStoryProgress) {

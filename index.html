@@ -196,6 +196,10 @@
           <button class="secondary" id="shyBtn" type="button"></button>
         </div>
         <p class="final-message" id="finalMessage"></p>
+        <div class="gift-love-note" id="giftLoveNote" hidden>
+          <p id="giftNote"></p>
+          <p class="gift-prompt" id="giftPrompt"></p>
+        </div>
         <div class="revisit-panel" id="revisitPanel" hidden>
           <p class="revisit-title" id="revisitTitle"></p>
           <div class="revisit-grid" id="revisitGrid"></div>
@@ -204,12 +208,18 @@
       <figure class="final-gift" id="finalGift" hidden>
         <img src="./assets/gift.jpg" alt="Vòng bình an màu đỏ anh làm tặng Ngọc">
         <figcaption id="giftCaption"></figcaption>
+        <div class="gift-peach-row" aria-hidden="true">
+          <img src="./assets/love-clean.gif" alt="">
+          <img src="./assets/soft-cats.gif" alt="">
+          <img src="./assets/kiss-clean.gif" alt="">
+        </div>
       </figure>
     </section>
   </main>
 
   <button class="sound-toggle" id="soundToggle" type="button" aria-label="Toggle music"></button>
   <div class="youtube-holder" id="youtubeHolder" aria-hidden="true"></div>
+  <audio id="birthdaySong" src="./assets/birthday-song.m4a" preload="metadata"></audio>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
   <script src="./env.js"></script>
