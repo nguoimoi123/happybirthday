@@ -52,7 +52,7 @@ window.BIRTHDAY_ENV = {
     eyebrow: "step softly",
     title: "Đừng bật đèn vội...",
     lines: [
-      "Cửa mở rồi. Nhưng anh muốn Ngọc đi thật chậm thôi.",
+      "Cửa mở rồi. Nhưng anh muốn Ngọc mở thật chậm thôi.",
       "Trong này có sinh nhật tuổi 19 của bé, có cả 2 tháng mình quen nhau được anh cất kỹ.",
       "Nếu tim em hơi tò mò một chút thì đúng rồi đó, vì phần này được làm riêng cho người anh thương nhất.",
     ],
@@ -105,7 +105,7 @@ window.BIRTHDAY_ENV = {
     title: "Ngọc ước đi rồi thổi nến nha",
     lead: "Anh đã chuẩn bị một chiếc bánh nhỏ cho tuổi 19 của bé. Khi sẵn sàng, bé thổi nhẹ vào nến để điều ước bay tới chỗ anh giữ bí mật.",
     button: "Bật mic để thổi nến",
-    permission: "Cho anh nghe tiếng gió xíu nha...",
+    permission: "Bấm nút “Bật mic” khi bé sẵn sàng thổi nến nha...",
     listening: "Đang nghe nè. Bé thổi nhẹ vào nến đi.",
     almost: "Sắp tắt rồi đó...",
     done: "Nến tắt rồi. Điều ước của Ngọc được anh giữ thật kỹ.",
@@ -124,7 +124,7 @@ Happy birthday bé. Hôm nay Ngọc bước sang tuổi 19, một tuổi mới t
 
 Anh muốn chúc em sinh nhật vui vẻ, nhưng nói vậy thôi thì ít quá. Anh mong tuổi 19 của em sẽ có thật nhiều ngày nhẹ lòng, nhiều nụ cười xinh, nhiều điều may mắn, và có cả anh ở bên để cùng em đi qua những ngày bình thường nhất. Anh mong em luôn được yêu thương theo cách khiến em thấy an toàn, được lắng nghe khi mệt, được ôm bằng lời nói dịu dàng khi thế giới ngoài kia hơi ồn.
 
-Hôm nay cũng là tròn 2 tháng mình quen nhau. Hai tháng nghe thì nhỏ xíu, nhưng với anh lại là một khoảng thời gian rất đặc biệt. Từ lúc có em, những ngày của anh có thêm một điều để mong, điện thoại có thêm một cái tên khiến anh mỉm cười, và trái tim anh thì có thêm một người để thương thật nhiều. Nói cho lãng mạn là em làm cuộc sống anh mềm hơn. Nói cho thật lòng là anh thích em nhiều lắm, thích đến mức đôi khi anh cũng tự thấy mình hơi ngốc.
+Hôm nay cũng là tròn 2 tháng mình quen nhau. Hai tháng nghe thì nhỏ xíu, nhưng với anh lại là một khoảng thời gian rất đặc biệt. Từ lúc có em, những ngày của anh có thêm một điều để mong, điện thoại có thêm một cái tên khiến anh mỉm cười, và trái tim anh thì có thêm một người để thương thật nhiều. Nói cho lãng mạn là em làm cuộc sống anh tốt đẹp hơn. Nói thật lòng là anh thích em nhiều lắm, thích đến mức đôi khi anh cũng tự thấy mình hơi ngốc.
 
 Cảm ơn Ngọc vì đã xuất hiện, vì đã cho anh cơ hội được quan tâm em, được nhớ em, được gọi em bằng những cái tên đáng yêu, và được làm người yêu của bé trong 2 tháng vừa qua. Anh biết mình chưa hoàn hảo, đôi lúc còn vụng về, nhưng tình cảm anh dành cho em là thật, rất thật. Anh muốn học cách thương em tốt hơn từng ngày, không chỉ trong những dịp đặc biệt như sinh nhật, mà cả trong những ngày bình thường khi em cần một người ở cạnh.
 

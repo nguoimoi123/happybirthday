@@ -1248,14 +1248,76 @@ input:focus {
   }
 
   .gif-lock {
-    right: 50%;
-    bottom: 39%;
-    width: min(66vw, 300px);
-    transform: translateX(50%);
+    position: relative;
+    right: auto;
+    bottom: auto;
+    order: -1;
+    align-self: center;
+    flex: 0 0 auto;
+    width: min(38vw, 18svh, 165px);
+    padding: 8px 8px 28px;
+    transform: rotate(-1.5deg);
   }
 
   .unlock-box {
     grid-template-columns: 1fr;
+  }
+
+  .lock-scene,
+  .suspense-scene {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .lock-scene .copy,
+  .suspense-scene .copy {
+    align-self: center;
+    margin: 0;
+    padding: 18px;
+  }
+
+  .lock-scene h1,
+  .suspense-scene h2 {
+    font-size: clamp(29px, 8vw, 38px);
+  }
+
+  .lock-scene .lead,
+  .suspense-scene .lead {
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.42;
+  }
+
+  .lock-scene .hint {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .lock-scene .unlock-box {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .lock-scene input,
+  .lock-scene .unlock-box button {
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .lock-scene .tap-label {
+    bottom: 6px;
+    min-height: 27px;
+    padding-inline: 10px;
+    font-size: 11px;
+  }
+
+  .lock-scene .gif-lock::before {
+    top: -10px;
+    width: 56px;
+    height: 20px;
   }
 
   .character {
@@ -1263,6 +1325,20 @@ input:focus {
     align-self: center;
     margin: 0 0 150px;
     width: min(48vw, 210px);
+  }
+
+  .suspense-scene .character {
+    order: -1;
+    width: min(38vw, 18svh, 165px);
+    min-width: 0;
+    max-height: 18svh;
+    margin: 0;
+    border-width: 7px;
+  }
+
+  .suspense-scene .next {
+    min-height: 44px;
+    margin-top: 14px;
   }
 
   .memory-scene,

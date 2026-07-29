@@ -55,7 +55,6 @@ const youtubeHolder = document.querySelector("#youtubeHolder");
 const secret = env.password;
 const storyProgressKey = `birthday-mini-story:progress:${env.timeGate.target}`;
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const shyMoveLimit = 2;
 let currentScene = 0;
 let typingTimer;
 let timeGateTimer;
@@ -76,7 +75,6 @@ let youtubeFrame;
 let youtubePlaying = true;
 let resumeMusicAfterCake = false;
 let isReviewingScene = false;
-let shyMoveCount = 0;
 const openedMemories = new Set();
 
 const memories = [
@@ -652,8 +650,7 @@ function stopBlowDetector() {
 }
 
 function moveShyButton() {
-  if (choiceRow.classList.contains("done") || shyMoveCount >= shyMoveLimit) return;
-  shyMoveCount += 1;
+  if (choiceRow.classList.contains("done")) return;
 
   const rowRect = choiceRow.getBoundingClientRect();
   const buttonRect = shyBtn.getBoundingClientRect();
@@ -874,15 +871,8 @@ shyBtn.addEventListener("pointerenter", (event) => {
   if (event.pointerType === "mouse") moveShyButton();
 });
 shyBtn.addEventListener("click", (event) => {
-  const isMouseClick = event.detail > 0
-    && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  if (isMouseClick && shyMoveCount < shyMoveLimit) {
-    event.preventDefault();
-    moveShyButton();
-    return;
-  }
-
-  finalReveal();
+  event.preventDefault();
+  moveShyButton();
 });
 soundToggle.addEventListener("click", toggleSound);
 
