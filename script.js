@@ -43,7 +43,7 @@ const yesBtn = document.querySelector("#yesBtn");
 const shyBtn = document.querySelector("#shyBtn");
 const choiceRow = document.querySelector(".choice-row");
 const finalCard = document.querySelector(".final-card");
-const finalGif = document.querySelector("#finalGif");
+const finalGift = document.querySelector("#finalGift");
 const finalMessage = document.querySelector("#finalMessage");
 const revisitPanel = document.querySelector("#revisitPanel");
 const revisitTitle = document.querySelector("#revisitTitle");
@@ -111,10 +111,6 @@ const sceneGifs = {
   7: {
     element: letterGif,
     files: ["./assets/love-clean.gif", "./assets/kiss-clean.gif", "./assets/start.gif", "./assets/sleepy-pat.gif"],
-  },
-  8: {
-    element: finalGif,
-    files: ["./assets/hug.gif", "./assets/kiss-clean.gif", "./assets/love-clean.gif", "./assets/hearts-clean.gif"],
   },
 };
 
@@ -185,6 +181,7 @@ function applyContent() {
 
   setText("#finalEyebrow", env.final.eyebrow);
   setText("#finalTitle", env.final.title);
+  setText("#giftCaption", env.final.giftCaption);
   yesBtn.textContent = env.final.yes;
   shyBtn.textContent = env.final.shy;
   revisitTitle.textContent = env.final.revisitTitle;
@@ -674,9 +671,8 @@ function finalReveal() {
   yesBtn.disabled = true;
   shyBtn.disabled = true;
   revisitPanel.hidden = true;
-  finalGif.classList.add("show");
-  finalGif.src = "./assets/hug.gif";
-  startSceneGifLoop(8);
+  finalGift.hidden = false;
+  finalGift.classList.add("show");
   typeText(finalMessage, env.final.message, 24, () => {
     revisitPanel.hidden = false;
   });
@@ -688,11 +684,10 @@ function restoreFinalReveal() {
   choiceRow.classList.add("done");
   yesBtn.disabled = true;
   shyBtn.disabled = true;
-  finalGif.classList.add("show");
-  finalGif.src = "./assets/hug.gif";
+  finalGift.hidden = false;
+  finalGift.classList.add("show");
   finalMessage.textContent = env.final.message;
   revisitPanel.hidden = false;
-  startSceneGifLoop(8);
 }
 
 function getStoryProgress() {

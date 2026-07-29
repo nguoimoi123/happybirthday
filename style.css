@@ -319,14 +319,12 @@ input:focus {
 
 .character.switching,
 .birthday-gif.switching,
-.final-gif.switching,
 .memory-note img.switching {
   opacity: .18;
 }
 
 .character,
 .birthday-gif,
-.final-gif,
 .memory-note img {
   transition: opacity .18s ease, transform .24s ease;
 }
@@ -681,8 +679,7 @@ input:focus {
   font-size: clamp(32px, 5vw, 54px);
 }
 
-.birthday-gif,
-.final-gif {
+.birthday-gif {
   align-self: center;
   justify-self: center;
   width: min(28vw, 330px);
@@ -1077,13 +1074,40 @@ input:focus {
   box-shadow: 0 12px 24px rgba(185, 77, 114, .14);
 }
 
-.final-gif {
+.final-gift {
+  align-self: center;
+  justify-self: center;
+  width: min(28vw, 330px);
+  margin: 0;
+  padding: 10px 10px 14px;
+  border: 1px solid rgba(255, 159, 189, .3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .86);
+  box-shadow: 0 20px 38px rgba(185, 77, 114, .18);
   opacity: 0;
   transform: translateY(12px) scale(.96);
   transition: opacity .45s ease, transform .45s ease;
 }
 
-.final-gif.show {
+.final-gift img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: center 43%;
+}
+
+.final-gift figcaption {
+  margin: 12px 8px 2px;
+  color: var(--rose-deep);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.final-gift.show {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
@@ -1388,11 +1412,22 @@ input:focus {
   .time-gate-gif,
   .countdown-gif,
   .birthday-gif,
-  .final-gif {
+  .final-gift {
     align-self: center;
     margin: 0;
     width: min(58vw, 250px);
     max-height: 30svh;
+  }
+
+  .final-gift {
+    width: min(52vw, 210px);
+    max-height: none;
+    padding: 7px 7px 10px;
+  }
+
+  .final-gift figcaption {
+    margin: 8px 6px 1px;
+    font-size: 13px;
   }
 
   .time-gate-scene {
@@ -1518,7 +1553,7 @@ input:focus {
   }
 
   .scene,
-  .final-gif {
+  .final-gift {
     transform: none;
   }
 
