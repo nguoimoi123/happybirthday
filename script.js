@@ -54,6 +54,8 @@ const youtubeHolder = document.querySelector("#youtubeHolder");
 
 const secret = env.password;
 const storyProgressKey = `birthday-mini-story:progress:${env.timeGate.target}`;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const shyMoveLimit = 2;
 let currentScene = 0;
 let typingTimer;
 let timeGateTimer;
@@ -74,6 +76,7 @@ let youtubeFrame;
 let youtubePlaying = true;
 let resumeMusicAfterCake = false;
 let isReviewingScene = false;
+let shyMoveCount = 0;
 const openedMemories = new Set();
 
 const memories = [
@@ -214,8 +217,12 @@ function goToScene(index, options = {}) {
     saveStoryProgress("visited");
   }
   scenes.forEach((scene, sceneIndex) => {
-    scene.classList.toggle("active", sceneIndex === index);
-    scene.classList.toggle("reviewing", isReviewingScene && sceneIndex === index);
+    const isActive = sceneIndex === index;
+    scene.classList.toggle("active", isActive);
+    scene.classList.toggle("reviewing", isReviewingScene && isActive);
+    scene.toggleAttribute("inert", !isActive);
+    if (isActive) scene.removeAttribute("aria-hidden");
+    else scene.setAttribute("aria-hidden", "true");
   });
   reviewReturnButtons.forEach((button) => {
     const scene = button.closest(".scene");
@@ -253,7 +260,7 @@ function goToScene(index, options = {}) {
 }
 
 function startLockGifLoop() {
-  if (lockGifTimer) return;
+  if (lockGifTimer || prefersReducedMotion.matches) return;
   lockGifTimer = setInterval(() => {
     lockGifIndex = (lockGifIndex + 1) % lockGifs.length;
     switchGif(lockGif, lockGifs, lockGifIndex, 130);
@@ -275,7 +282,7 @@ function switchGif(element, files, index, delay = 140) {
 
 function startSceneGifLoop(sceneIndex) {
   const config = sceneGifs[sceneIndex];
-  if (!config || !config.element) return;
+  if (!config || !config.element || prefersReducedMotion.matches) return;
   sceneGifIndexes[sceneIndex] = sceneGifIndexes[sceneIndex] || 0;
   config.element.src = config.files[sceneGifIndexes[sceneIndex]];
   sceneGifTimer = setInterval(() => {
@@ -398,6 +405,11 @@ async function sha256(value) {
 function typeText(target, text, speed = 28, done) {
   clearTimeout(typingTimer);
   target.textContent = "";
+  if (prefersReducedMotion.matches) {
+    target.textContent = text;
+    if (done) done();
+    return;
+  }
   let index = 0;
 
   function tick() {
@@ -416,6 +428,10 @@ function typeText(target, text, speed = 28, done) {
 }
 
 function startSuspense() {
+  if (prefersReducedMotion.matches) {
+    suspenseText.textContent = env.suspense.lines.join("\n");
+    return;
+  }
   let lineIndex = 0;
   suspenseText.textContent = "";
 
@@ -506,7 +522,6 @@ function startCakeWish() {
   micStart.dataset.fallback = "";
   micStart.textContent = env.cake.button;
   blowLevel.style.width = "0%";
-  requestBlowMic();
 }
 
 async function requestBlowMic() {
@@ -637,7 +652,8 @@ function stopBlowDetector() {
 }
 
 function moveShyButton() {
-  if (choiceRow.classList.contains("done")) return;
+  if (choiceRow.classList.contains("done") || shyMoveCount >= shyMoveLimit) return;
+  shyMoveCount += 1;
 
   const rowRect = choiceRow.getBoundingClientRect();
   const buttonRect = shyBtn.getBoundingClientRect();
@@ -699,7 +715,7 @@ function saveStoryProgress(value) {
 }
 
 function softBurst(count = 40) {
-  if (!window.confetti) return;
+  if (!window.confetti || prefersReducedMotion.matches) return;
   window.confetti({
     particleCount: count,
     spread: 58,
@@ -712,7 +728,7 @@ function softBurst(count = 40) {
 }
 
 function bigBurst() {
-  if (!window.confetti) return;
+  if (!window.confetti || prefersReducedMotion.matches) return;
   window.confetti({
     particleCount: 95,
     spread: 72,
@@ -730,7 +746,7 @@ function bigBurst() {
 }
 
 function startHearts() {
-  if (heartTimer) return;
+  if (heartTimer || prefersReducedMotion.matches) return;
   heartTimer = setInterval(() => {
     const heart = document.createElement("span");
     heart.className = "heart";
@@ -854,11 +870,19 @@ memoryCards.forEach((card) => {
 });
 
 yesBtn.addEventListener("click", finalReveal);
-shyBtn.addEventListener("pointerenter", moveShyButton);
-shyBtn.addEventListener("focus", moveShyButton);
+shyBtn.addEventListener("pointerenter", (event) => {
+  if (event.pointerType === "mouse") moveShyButton();
+});
 shyBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  moveShyButton();
+  const isMouseClick = event.detail > 0
+    && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (isMouseClick && shyMoveCount < shyMoveLimit) {
+    event.preventDefault();
+    moveShyButton();
+    return;
+  }
+
+  finalReveal();
 });
 soundToggle.addEventListener("click", toggleSound);
 
