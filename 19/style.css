@@ -33,6 +33,25 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+.album-back {
+  position: fixed;
+  z-index: 20;
+  top: 18px;
+  left: 18px;
+  padding: 9px 14px;
+  border: 1px solid rgba(185, 77, 114, .2);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 8px 24px rgba(90, 48, 64, .1);
+  backdrop-filter: blur(12px);
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.album-back:hover { background: #fff; }
+
 .app {
   position: relative;
   width: 100vw;

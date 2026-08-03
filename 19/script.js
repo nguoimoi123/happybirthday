@@ -56,6 +56,7 @@ const birthdaySong = document.querySelector("#birthdaySong");
 
 const secret = env.password;
 const storyProgressKey = `birthday-mini-story:progress:${env.timeGate.target}`;
+const archiveReplay = new URLSearchParams(window.location.search).get("replay") === "1";
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let currentScene = 0;
 let typingTimer;
@@ -386,29 +387,6 @@ function padTime(value) {
   return String(value).padStart(2, "0");
 }
 
-async function tryTimeGateOverride() {
-  const entered = gateOverrideInput.value.trim();
-  const enteredHash = await sha256(entered);
-
-  if (enteredHash === env.timeGate.overrideHash) {
-    softBurst(42);
-    goToScene(1);
-    return;
-  }
-
-  gateOverrideHint.textContent = env.timeGate.overrideWrong;
-  gateOverrideInput.select();
-  document.querySelector(".time-gate-scene").classList.remove("shake");
-  void document.querySelector(".time-gate-scene").offsetWidth;
-  document.querySelector(".time-gate-scene").classList.add("shake");
-}
-
-async function sha256(value) {
-  const bytes = new TextEncoder().encode(value);
-  const digest = await crypto.subtle.digest("SHA-256", bytes);
-  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-
 function typeText(target, text, speed = 28, done) {
   clearTimeout(typingTimer);
   target.textContent = "";
@@ -717,6 +695,7 @@ function finalReveal() {
 }
 
 function restoreFinalReveal() {
+  app.classList.add("gift-revealed");
   finalCard.classList.add("revealed");
   choiceRow.classList.add("done");
   yesBtn.disabled = true;
@@ -837,23 +816,6 @@ function postYoutubeCommand(func) {
 
 applyContent();
 
-gateOpen.addEventListener("click", () => {
-  if (isTimeGateOpen()) goToScene(1);
-});
-
-gateOverrideToggle.addEventListener("click", () => {
-  gateOverride.hidden = !gateOverride.hidden;
-  if (!gateOverride.hidden) {
-    gateOverrideInput.focus();
-    gateOverrideHint.textContent = env.timeGate.overrideHint;
-  }
-});
-
-gateOverrideSubmit.addEventListener("click", tryTimeGateOverride);
-gateOverrideInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") tryTimeGateOverride();
-});
-
 unlockBtn.addEventListener("click", unlock);
 holdGift.addEventListener("click", () => {
   passwordInput.focus();
@@ -914,11 +876,15 @@ birthdaySong.addEventListener("ended", () => {
 birthdaySong.addEventListener("error", finishBirthdaySongPlayback);
 
 const savedStoryProgress = getStoryProgress();
-if (isTimeGateOpen() && savedStoryProgress) {
+if (archiveReplay && Date.now() >= new Date(env.timeGate.closeAt).getTime()) {
+  goToScene(8);
+  restoreFinalReveal();
+  startHearts();
+} else if (savedStoryProgress) {
   goToScene(8);
   if (savedStoryProgress === "revealed") restoreFinalReveal();
   startHearts();
 } else {
-  goToScene(0);
+  goToScene(1);
 }
 startDefaultMusic();

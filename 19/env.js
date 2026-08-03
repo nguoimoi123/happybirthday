@@ -27,7 +27,6 @@ window.BIRTHDAY_ENV = {
     overrideSubmit: "Mở ngay",
     overrideHint: "Chỉ có người yêu của bé mới có mật khẩu này.",
     overrideWrong: "Liu liu, mật khẩu sai rồi. Bé thử lại nha.",
-    overrideHash: "9f64d90443fa53d97c8befbee3651ed4c6bfa913e7a741d2ae474bd450e5085d",
     labels: {
       days: "ngày",
       hours: "giờ",
